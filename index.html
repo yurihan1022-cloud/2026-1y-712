@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ⅶ-1-2 태양계 행성 분류</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F9FF;
+  --ink:#27324A;
+  --muted:#66728C;
+  --line:#DCE4F2;
+  --gas:#4B5BD6;        /* 기체: 주황 */
+  --gas-soft:#E7EAFF;
+  --sky:#5AB4E8;        /* 기체 입자: 하늘 */
+  --sky-soft:#E2F2FC;
+  --mint:#3FBFA6;
+  --mint-soft:#DDF5EF;
+  --sun:#FFD84D;
+  --sun-soft:#FFF6D2;
+  --answer:#16A34A;
+  --card:#FFFFFF;
+  --r:18px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Noto Sans KR',system-ui,sans-serif;font-size:19px;line-height:1.75;word-break:keep-all}
+img{max-width:100%;display:block}
+h1,h2,h3,.jua{font-family:'Jua','Noto Sans KR',sans-serif;font-weight:400;letter-spacing:-.01em}
+
+/* ===== 상단 내비 ===== */
+nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+nav .in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:6px;padding:10px 18px;overflow-x:auto}
+nav .brand{font-family:'Jua';font-size:20px;color:var(--gas);white-space:nowrap;margin-right:10px}
+nav a{white-space:nowrap;text-decoration:none;color:var(--ink);font-size:16px;padding:6px 14px;border-radius:999px;font-weight:500}
+nav a.home-link:hover{opacity:.85;background:var(--ink);color:#fff}
+nav a:hover,nav a.on{background:var(--gas-soft);color:#2E3A9E}
+
+/* ===== 히어로 ===== */
+.hero{position:relative;overflow:hidden;background:radial-gradient(1.5px 1.5px at 12% 20%,#fff 60%,transparent),radial-gradient(1.5px 1.5px at 30% 70%,#fff 60%,transparent),radial-gradient(2px 2px at 55% 30%,#FFE58A 60%,transparent),radial-gradient(1.5px 1.5px at 75% 80%,#fff 60%,transparent),radial-gradient(1.5px 1.5px at 88% 15%,#fff 60%,transparent),radial-gradient(1px 1px at 45% 85%,#fff 60%,transparent),linear-gradient(160deg,#141A40 0%,#232B6B 55%,#34409A 100%);padding:64px 20px 70px}
+.hero .in{max-width:1180px;margin:0 auto;position:relative;z-index:2;display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center}
+.hero .unit{display:inline-block;background:#fff;color:#2E3A9E;font-family:'Jua';font-size:20px;padding:4px 16px;border-radius:999px}
+.hero h1{font-size:clamp(40px,6vw,68px);line-height:1.15;margin:14px 0 10px;color:#fff}
+.hero p{margin:0;font-size:20px;color:#DDE2FF}
+.hero .pages{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
+.hero .pages span{background:rgba(255,255,255,.75);border-radius:12px;padding:6px 14px;font-size:17px}
+#heroBox{width:100%;aspect-ratio:1/1;max-width:340px;justify-self:center;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0%,#FFF7EF 60%,#FFE6D2 100%);box-shadow:inset 0 0 0 6px #fff, 0 12px 30px rgba(200,90,18,.18)}
+
+/* ===== 레이아웃 ===== */
+main{max-width:1180px;margin:0 auto;padding:10px 20px 80px}
+section{padding:46px 0 10px}
+.sec-head{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.sec-head .num{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;font-family:'Jua';font-size:28px;color:#fff;background:var(--gas);flex:none}
+.sec-head h2{font-size:34px;margin:0;line-height:1.2}
+.sec-head small{display:block;font-family:'Noto Sans KR';font-size:15px;color:var(--muted);font-weight:500}
+
+.card{background:var(--card);border-radius:var(--r);padding:26px 28px;margin:18px 0;border:2px solid var(--line)}
+.card h3{font-size:25px;margin:0 0 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tag{font-family:'Jua';font-size:16px;padding:3px 12px;border-radius:999px;background:var(--sky-soft);color:#1F6FA0}
+.tag.gas{background:var(--gas-soft);color:#2E3A9E}
+.tag.mint{background:var(--mint-soft);color:#1E8571}
+.tag.sun{background:var(--sun-soft);color:#9A7400}
+.card.concept{border-color:#C3C9F5;background:linear-gradient(#fff,#fff) padding-box}
+.card.concept h3::before{content:"";width:10px;height:26px;border-radius:4px;background:var(--gas)}
+.card.think{background:#FBFDFF;border-color:#BFE0F5}
+.card.lab{border-color:#A9E3D6}
+.card.check{background:#FFFCEF;border-color:#F3DF8C}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}
+.grid2.wide-left{grid-template-columns:1.3fr .7fr}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.fig{background:#fff;border-radius:14px;padding:8px}
+.fig figcaption{font-size:15px;color:var(--muted);text-align:center;margin-top:4px}
+.photo{border-radius:14px;overflow:hidden}
+.bubble{background:var(--sky-soft);border-radius:18px;padding:14px 20px;font-weight:700;font-size:21px;position:relative}
+.big-q{font-family:'Jua';font-size:28px;line-height:1.45;color:#1F4E79;margin:4px 0 14px}
+.def{font-size:22px;font-weight:700;background:var(--gas-soft);border-radius:14px;padding:14px 20px;margin:12px 0}
+ol.steps{padding-left:0;list-style:none;counter-reset:s;margin:0}
+ol.steps li{counter-increment:s;position:relative;padding:6px 0 6px 46px}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:7px;width:32px;height:32px;border-radius:50%;background:var(--mint);color:#fff;font-family:'Jua';font-size:19px;display:grid;place-items:center;line-height:1}
+.qlist{margin:0;padding:0;list-style:none}
+.qlist>li{padding:14px 0;border-top:1px dashed var(--line)}
+.qlist>li:first-child{border-top:none}
+.qn{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;font-family:'Jua';font-size:17px;margin-right:8px;line-height:1}
+.note{font-size:16px;color:var(--muted)}
+.side{background:#F3F6FC;border-radius:14px;padding:12px 16px;font-size:16px;line-height:1.6}
+.side b{color:#2E3A9E}
+
+/* ===== 빈칸 / 정답 ===== */
+.bl{display:inline-block;min-width:4.2em;padding:0 .35em;margin:0 .15em;border-radius:8px;text-align:center;cursor:pointer;
+    color:transparent;background:var(--sun-soft);border-bottom:3px solid #E9C43A;line-height:1.45;transition:color .25s,background .25s}
+.bl.on{color:var(--answer);font-weight:900;background:#E9F8EE;border-bottom-color:var(--answer)}
+.ans{position:relative;margin-top:10px;border-radius:12px;padding:12px 16px;cursor:pointer;min-height:54px;background:#F4F6FA;border:2px dashed #C9D3E4}
+.ans>*{visibility:hidden}
+.ans::before{content:"?";position:absolute;inset:0;display:grid;place-items:center;font-family:'Jua';font-size:26px;color:#9AA7BF}
+.ans.on{background:#EDFAF1;border:2px solid #BFE8CC;color:var(--answer);font-weight:700}
+.ans.on>*{visibility:visible}
+.ans.on::before{content:none}
+.ans p{margin:0}
+.rv-bar{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+.btn{font-family:'Jua';font-size:20px;border:none;border-radius:14px;padding:10px 22px;cursor:pointer;background:var(--answer);color:#fff;box-shadow:0 3px 0 #0E7A35;transition:transform .08s}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 #0E7A35}
+.btn .cnt{font-family:'Noto Sans KR';font-size:15px;opacity:.85;margin-left:6px}
+.btn.ghost{background:#fff;color:var(--muted);box-shadow:0 0 0 2px var(--line) inset}
+.btn.gas{background:var(--gas);box-shadow:0 3px 0 #2E3A9E}
+.btn.sky{background:var(--sky);box-shadow:0 3px 0 #2E86BA}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #2563EB;outline-offset:3px}
+
+/* ===== 표 ===== */
+table.tb{width:100%;border-collapse:separate;border-spacing:0;font-size:18px;overflow:hidden;border-radius:14px;border:2px solid var(--line)}
+.tb th,.tb td{padding:10px 12px;text-align:center;border-top:1px solid var(--line)}
+.tb thead th{background:#EEF3FB;border-top:none;font-family:'Jua';font-weight:400;font-size:20px}
+.tb th.down{background:var(--sky-soft);color:#1F6FA0}
+.tb th.up{background:var(--gas-soft);color:#2E3A9E}
+.scroll-x{overflow-x:auto}
+
+/* ===== 시뮬레이션 ===== */
+.sim{background:#fff;border-radius:var(--r);border:2px solid #BFE0F5;padding:20px}
+.sim canvas{width:100%;height:300px;display:block;border-radius:14px;background:#FAFCFF}
+.sim-ctrl{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;margin-top:14px}
+.sim-ctrl input[type=range]{width:100%;accent-color:var(--gas);height:28px}
+.meters{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.meter{border-radius:14px;padding:10px 14px;background:#F4F7FC;text-align:center}
+.meter .k{font-size:15px;color:var(--muted)}
+.meter .v{font-family:'Jua';font-size:34px;line-height:1.2}
+.meter.p .v{color:#2E3A9E}
+.meter.c .v{color:#1F6FA0}
+.bar{height:12px;border-radius:999px;background:#E8EDF6;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--gas);border-radius:999px;transition:width .3s}
+
+/* ===== O/X ===== */
+.ox{display:flex;align-items:center;gap:14px;padding:12px 0;border-top:1px dashed var(--line)}
+.ox:first-of-type{border-top:none}
+.ox .s{flex:1}
+.ox .bl{min-width:2.4em;font-family:'Jua';font-size:26px}
+
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+
+footer{text-align:center;color:var(--muted);font-size:15px;padding:30px 0 calc(30px + env(safe-area-inset-bottom,0px))}
+
+@media (max-width:860px){
+  body{font-size:17px}
+  .hero .in,.grid2,.grid2.wide-left{grid-template-columns:1fr}
+  #heroBox{max-width:240px}
+  .grid3{grid-template-columns:1fr 1fr}
+  .meters{grid-template-columns:1fr}
+  .sim-ctrl{grid-template-columns:1fr}
+  .sim canvas{height:240px}
+  .sec-head h2{font-size:28px}
+  .card{padding:20px 18px}
+}
+.hero .unit{color:#2E3A9E}
+.linkbtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.btn.link{background:#27324A;box-shadow:0 3px 0 #111827;text-decoration:none;display:inline-block}
+.btn.yt{background:#E02424;box-shadow:0 3px 0 #9B1C1C;text-decoration:none;display:inline-block;font-size:24px;padding:14px 28px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.tabs .btn.off{background:#fff;color:var(--muted);box-shadow:0 0 0 2px var(--line) inset}
+.chartbox{background:#141A40;border-radius:16px;padding:10px}
+/* 분류 놀이 */
+.pool{display:flex;flex-wrap:wrap;gap:10px;min-height:120px;padding:12px;border-radius:16px;background:#F3F6FC;border:2px dashed #C9D3E4;margin-top:14px}
+.pcard{width:104px;padding:8px 6px;border-radius:14px;background:#fff;border:2px solid var(--line);text-align:center;cursor:grab;font-family:'Jua';font-size:19px;user-select:none;transition:transform .15s,box-shadow .15s,border-color .2s}
+.pcard img{height:54px;width:auto;max-width:96px;margin:0 auto 4px;object-fit:contain}
+.pcard.sel{border-color:var(--gas);box-shadow:0 0 0 4px var(--gas-soft);transform:translateY(-3px)}
+.pcard.ok{border-color:var(--answer);background:#EDFAF1}
+.pcard.bad{border-color:#DC2626;background:#FEF2F2}
+.groups{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px}
+.group{border-radius:16px;border:3px solid var(--line);padding:12px;min-height:170px;background:#fff;cursor:pointer}
+.group h4{font-family:'Jua';font-weight:400;font-size:24px;margin:0 0 8px}
+.group .zone{display:flex;flex-wrap:wrap;gap:10px;min-height:110px}
+.group.over{border-color:var(--gas);background:var(--gas-soft)}
+.result{font-family:'Jua';font-size:22px;margin-top:10px;min-height:32px}
+.pl-row{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;justify-content:center;padding:14px;border-radius:14px;background:#141A40}
+.pl-row figure{margin:0;text-align:center;color:#DDE2FF;font-family:'Jua';font-size:16px}
+@media (max-width:860px){.groups{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav><div class="in">
+  <a class="home-link" href="https://2026-1y-sub.vercel.app/" style="background:var(--ink);color:#fff;font-weight:700;margin-right:6px">← 목록으로</a>
+  <span class="brand">Ⅶ-1 태양계 행성 분류</span>
+  <a href="#intro">들어가기</a>
+  <a href="#sort">행성 분류하기</a>
+  <a href="#concept">지구형·목성형</a>
+  <a href="#wrap">확인·정리</a>
+  <a href="#video">영상</a>
+</div></nav>
+
+<header class="hero">
+  <div class="in">
+    <div>
+      <span class="unit">Ⅶ. 태양계 · 1. 태양계 구성 천체와 태양의 활동</span>
+      <h1>태양계<br>행성 분류</h1>
+      <p>8개의 행성은 지구와 닮은 행성, 목성과 닮은 행성으로 나눌 수 있다.</p>
+      <div class="pages"><span>교과서 234~235쪽</span><span>② 태양계 행성 분류</span><span>지구형 행성 · 목성형 행성</span></div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px">
+      <img src="images/earth.webp" alt="지구" style="width:90px;border-radius:50%">
+      <span class="jua" style="color:#FFD84D;font-size:34px">VS</span>
+      <img src="images/jupiter.webp" alt="목성" style="width:240px">
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ================= 들어가기 ================= -->
+<section id="intro">
+  <div class="sec-head"><div class="num">1</div><h2>들어가기<small>교과서 234쪽</small></h2></div>
+
+  <div class="card check reveal" data-reveal>
+    <h3><span class="tag sun">이전 단원 확인하기</span>빈칸에 들어갈 알맞은 단어를 골라 써 보자.</h3>
+    <p class="note" style="margin-top:-6px">보기: 해왕성, 목성, 혜성</p>
+    <ul class="qlist">
+      <li><span class="qn">1</span><span class="bl">혜성</span>은 태양 주위를 긴 타원 궤도로 공전한다.</li>
+      <li><span class="qn">2</span><span class="bl">해왕성</span>은 대기의 소용돌이인 대흑점이 있다.</li>
+      <li><span class="qn">3</span><span class="bl">목성</span>의 표면에는 대기의 소용돌이인 대적점이 나타난다.</li>
+    </ul>
+    <div class="rv-bar"><button class="btn rv-btn">정답 확인</button></div>
+  </div>
+
+  <div class="card reveal">
+    <h3><span class="tag mint">이 단원을 배우면</span></h3>
+    <div class="side" style="font-size:19px">· 태양계 행성을 지구형 행성과 목성형 행성으로 분류할 수 있다.<br>· 지구형 행성과 목성형 행성의 특징을 설명할 수 있다.</div>
+  </div>
+
+  <div class="card think reveal" data-reveal>
+    <h3><span class="tag">생각 깨우기</span>나는 어디로 가야 하지?</h3>
+    <div class="grid2">
+      <img src="images/mars_think.webp" alt="목성과 지구 사이에서 고민하는 화성">
+      <div>
+        <p>태양 주위를 공전하는 태양계 행성은 지구와 특징이 비슷한 행성도 있고, 목성과 특징이 비슷한 행성도 있다.</p>
+        <p class="big-q">화성은 지구와 목성 중 어느 행성과 특징이 비슷할까?</p>
+      </div>
+    </div>
+    <div class="ans"><p>화성은 지구와 특징이 비슷하다. 화성은 지구와 같이 표면이 단단한 암석으로 이루어져 있기 때문이다. 목성은 표면이 기체로 이루어져 있다.</p></div>
+    <div class="rv-bar"><button class="btn rv-btn">정답 확인</button></div>
+  </div>
+</section>
+
+<!-- ================= 행성 분류하기 ================= -->
+<section id="sort">
+  <div class="sec-head"><div class="num">2</div><h2>태양계 행성 분류하기<small>교과서 234쪽 · 해 보기</small></h2></div>
+
+  <div class="card lab reveal">
+    <h3><span class="tag mint">해 보기</span>그래프로 행성의 특징 비교하기</h3>
+    <p style="margin-top:-4px">다음은 태양계 행성의 특징을 나타낸 그래프이다. 버튼을 눌러 질량, 반지름, 위성 수를 비교해 보자.</p>
+    <div class="tabs">
+      <button class="btn" data-g="mass">질량 (지구 = 1)</button>
+      <button class="btn off" data-g="radius">반지름 (지구 = 1)</button>
+      <button class="btn off" data-g="moons">위성 수 (개)</button>
+    </div>
+    <div class="chartbox"><svg id="chart" viewBox="0 0 900 380" width="100%" role="img" aria-label="태양계 행성 특징 막대그래프"></svg></div>
+    <p class="note" style="margin:8px 0 0">질량과 위성 수 그래프는 값 차이가 너무 커서 교과서처럼 세로축 중간을 줄여서 나타냈다. (출처: 미국항공우주국[NASA]) 정확한 수치보다 막대의 대략적인 높이를 비교해 보자.</p>
+  </div>
+
+  <div class="card lab reveal">
+    <h3><span class="tag mint">분류 놀이</span>비슷한 행성끼리 두 집단으로 나누어 보자.</h3>
+    <p style="margin-top:-4px">행성 카드를 눌러 고른 뒤 집단 상자를 누르면 옮겨진다. (끌어다 놓아도 된다.) 다 옮기면 「확인하기」를 누르자.</p>
+    <div class="pool" id="pool"></div>
+    <div class="groups">
+      <div class="group" data-zone="A"><h4>집단 가</h4><div class="zone"></div></div>
+      <div class="group" data-zone="B"><h4>집단 나</h4><div class="zone"></div></div>
+    </div>
+    <div class="rv-bar" style="justify-content:space-between;align-items:center">
+      <div class="result" id="sortResult"></div>
+      <div style="display:flex;gap:10px"><button class="btn ghost" id="sortReset">다시 하기</button><button class="btn gas" id="sortCheck">확인하기</button></div>
+    </div>
+  </div>
+
+  <div class="card lab reveal" data-reveal>
+    <h3><span class="tag mint">정리</span>각 집단에 속한 행성의 공통적인 특징을 정리해 보자.</h3>
+    <div class="scroll-x"><table class="tb">
+      <thead><tr><th></th><th>집단 가</th><th>집단 나</th></tr></thead>
+      <tbody>
+        <tr><th>행성</th><td><span class="bl" style="min-width:10em">수성, 금성, 지구, 화성</span></td><td><span class="bl" style="min-width:11em">목성, 토성, 천왕성, 해왕성</span></td></tr>
+        <tr><th>공통적인 특징</th><td style="text-align:left"><div class="ans" style="margin:0"><p>행성의 질량과 반지름이 작고, 위성이 없거나 적다.</p></div></td><td style="text-align:left"><div class="ans" style="margin:0"><p>행성의 질량과 반지름이 크고, 위성의 수가 많다.</p></div></td></tr>
+      </tbody>
+    </table></div>
+    <div class="rv-bar"><button class="btn rv-btn">정답 확인</button></div>
+  </div>
+</section>
+
+<!-- ================= 개념 ================= -->
+<section id="concept">
+  <div class="sec-head"><div class="num">3</div><h2>지구형 행성과 목성형 행성<small>교과서 235쪽 · 그림 Ⅶ-2</small></h2></div>
+
+  <div class="card concept reveal" data-reveal>
+    <h3>지구형 행성</h3>
+    <div class="pl-row">
+      <figure><img src="images/mercury.webp" alt="" style="height:40px;margin:auto">수성</figure>
+      <figure><img src="images/venus.webp" alt="" style="height:70px;margin:auto">금성</figure>
+      <figure><img src="images/earth.webp" alt="" style="height:74px;margin:auto;border-radius:50%">지구</figure>
+      <figure><img src="images/mars.webp" alt="" style="height:50px;margin:auto;border-radius:50%">화성</figure>
+    </div>
+    <p style="margin-top:14px">태양계 행성은 특징에 따라 지구형 행성과 목성형 행성으로 분류할 수 있다. 수성, 금성, 지구, 화성은 <span class="bl">지구형</span> 행성이다.</p>
+    <p>지구형 행성은 질량과 반지름이 목성형 행성에 비해 <span class="bl">작고</span>, 표면이 단단한 <span class="bl">암석</span>으로 이루어져 있다. 또 고리가 <span class="bl">없고</span> 위성은 없거나 수가 <span class="bl">적다</span>.</p>
+    <div class="rv-bar"><button class="btn rv-btn">정답 확인</button></div>
+  </div>
+
+  <div class="card concept reveal" data-reveal>
+    <h3>목성형 행성</h3>
+    <div class="pl-row">
+      <figure><img src="images/jupiter.webp" alt="" style="height:130px;margin:auto">목성</figure>
+      <figure><img src="images/saturn.webp" alt="" style="height:110px;margin:auto">토성</figure>
+      <figure><img src="images/uranus.webp" alt="" style="height:70px;margin:auto">천왕성</figure>
+      <figure><img src="images/neptune.webp" alt="" style="height:70px;margin:auto">해왕성</figure>
+    </div>
+    <p style="margin-top:14px">목성, 토성, 천왕성, 해왕성은 <span class="bl">목성형</span> 행성이다.</p>
+    <p>목성형 행성은 질량과 반지름이 지구형 행성에 비해 <span class="bl">크고</span>, 표면이 <span class="bl">기체</span>로 이루어져 있다. 또 고리가 <span class="bl">있고</span> 위성 수가 <span class="bl">많다</span>.</p>
+    <div class="rv-bar"><button class="btn rv-btn">정답 확인</button></div>
+  </div>
+
+  <div class="card concept reveal" data-reveal>
+    <h3>한눈에 비교하기</h3>
+    <div class="scroll-x"><table class="tb">
+      <thead><tr><th>구분</th><th class="down">지구형 행성</th><th class="up">목성형 행성</th></tr></thead>
+      <tbody>
+        <tr><th>행성</th><td>수성, 금성, 지구, 화성</td><td>목성, 토성, 천왕성, 해왕성</td></tr>
+        <tr><th>질량</th><td><span class="bl">작다</span></td><td><span class="bl">크다</span></td></tr>
+        <tr><th>반지름</th><td><span class="bl">작다</span></td><td><span class="bl">크다</span></td></tr>
+        <tr><th>표면 상태</th><td><span class="bl">암석</span></td><td><span class="bl">기체</span></td></tr>
+        <tr><th>고리</th><td><span class="bl">없다</span></td><td><span class="bl">있다</span></td></tr>
+        <tr><th>위성 수</th><td><span class="bl" style="min-width:6em">없거나 적다</span></td><td><span class="bl">많다</span></td></tr>
+        <tr><th>평균 밀도 <span class="note">(보충)</span></th><td><span class="bl">크다</span></td><td><span class="bl">작다</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="side" style="margin-top:12px"><b>보충 · 평균 밀도</b> 지구형 행성은 질량과 반지름이 목성형 행성보다 작지만 철, 규소, 산소 등의 무거운 원소로 이루어져 있어, 수소와 헬륨 등의 가벼운 원소로 이루어진 목성형 행성보다 평균 밀도가 크다.</div>
+    <div class="rv-bar"><button class="btn rv-btn">정답 확인</button></div>
+  </div>
+</section>
+
+<!-- ================= 확인·정리 ================= -->
+<section id="wrap">
+  <div class="sec-head"><div class="num">4</div><h2>확인하고 정리하기<small>교과서 235쪽</small></h2></div>
+
+  <div class="card check reveal" data-reveal>
+    <h3><span class="tag sun">스스로 확인하기</span></h3>
+    <ul class="qlist">
+      <li><span class="qn">1</span>지구형 행성에는 수성, 금성, 지구, <span class="bl">화성</span>이/가 있다.</li>
+      <li><span class="qn">2</span><b style="color:#9A7400">탐구 능력</b> | 태양계 행성을 그림과 같이 두 집단 (가)와 (나)로 분류할 때 목성형 행성은 어디에 해당하는지 고르고, 그렇게 생각한 까닭을 설명해 보자.
+        <svg viewBox="0 0 420 260" width="100%" style="max-width:420px;display:block;margin:8px 0" role="img" aria-label="반지름과 질량에 따라 (가)와 (나) 두 집단으로 나눈 그래프">
+          <line x1="50" y1="220" x2="400" y2="220" stroke="#27324A" stroke-width="2"/><line x1="50" y1="20" x2="50" y2="220" stroke="#27324A" stroke-width="2"/>
+          <text x="400" y="244" text-anchor="end" font-size="15" fill="#66728C" font-family="Noto Sans KR">반지름</text>
+          <text x="10" y="18" font-size="15" fill="#66728C" font-family="Noto Sans KR">질량</text>
+          <ellipse cx="105" cy="185" rx="45" ry="26" fill="rgba(90,180,232,.18)" stroke="#5AB4E8" stroke-width="2"/>
+          <circle cx="85" cy="195" r="5" fill="#5AB4E8"/><circle cx="100" cy="180" r="6" fill="#5AB4E8"/><circle cx="112" cy="186" r="6" fill="#5AB4E8"/><circle cx="125" cy="176" r="6" fill="#5AB4E8"/>
+          <text x="105" y="150" text-anchor="middle" font-size="22" font-family="Jua" fill="#1F6FA0">(가)</text>
+          <ellipse cx="300" cy="90" rx="80" ry="55" fill="rgba(75,91,214,.15)" stroke="#4B5BD6" stroke-width="2"/>
+          <circle cx="250" cy="120" r="8" fill="#4B5BD6"/><circle cx="270" cy="112" r="8" fill="#4B5BD6"/><circle cx="320" cy="85" r="11" fill="#4B5BD6"/><circle cx="350" cy="55" r="13" fill="#4B5BD6"/>
+          <text x="300" y="165" text-anchor="middle" font-size="22" font-family="Jua" fill="#2E3A9E">(나)</text>
+        </svg>
+        <p style="margin:0">목성형 행성 → <span class="bl">(나)</span></p>
+        <div class="ans"><p>목성형 행성은 지구형 행성에 비해 질량과 반지름이 크기 때문에 (나)에 해당한다.</p></div></li>
+    </ul>
+    <div class="rv-bar"><button class="btn rv-btn">정답 확인</button></div>
+  </div>
+
+  <div class="card check reveal" data-reveal>
+    <h3><span class="tag sun">추가 확인 문제</span>빈칸에 들어갈 알맞은 단어를 골라 써 보자.</h3>
+    <p class="note" style="margin-top:-6px">보기: 크다, 작다, 많다, 적다</p>
+    <ul class="qlist">
+      <li><span class="qn">1</span>지구형 행성은 목성형 행성에 비해 질량과 반지름이 <span class="bl">작다</span>.</li>
+      <li><span class="qn">2</span>목성형 행성은 고리가 있고, 지구형 행성에 비해 위성 수가 <span class="bl">많다</span>.</li>
+    </ul>
+    <div class="rv-bar"><button class="btn rv-btn">정답 확인</button></div>
+  </div>
+
+  <div class="card check reveal" data-reveal>
+    <h3><span class="tag sun">O / X 확인</span>문장이 옳으면 O, 옳지 않으면 X</h3>
+    <div class="ox"><span class="s">① 화성은 지구형 행성이다.</span><span class="bl">O</span></div>
+    <div class="ox"><span class="s">② 목성형 행성은 표면이 단단한 암석으로 이루어져 있다.</span><span class="bl">X</span></div>
+    <div class="ox"><span class="s">③ 지구형 행성은 모두 위성이 하나도 없다.</span><span class="bl">X</span></div>
+    <div class="ox"><span class="s">④ 천왕성과 해왕성은 목성형 행성이다.</span><span class="bl">O</span></div>
+    <div class="ox"><span class="s">⑤ 고리는 목성형 행성에서만 볼 수 있다.</span><span class="bl">O</span></div>
+    <p class="note" style="margin:8px 0 0">③ 지구(위성 1개)와 화성(위성 2개)은 위성이 있다. 위성이 없는 행성은 수성과 금성이다.</p>
+    <div class="rv-bar"><button class="btn rv-btn">정답 확인</button></div>
+  </div>
+
+  <div class="card concept reveal" data-reveal>
+    <h3>배운 내용 정리하기 · 태양계 행성</h3>
+    <div class="grid2" style="align-items:stretch">
+      <div class="side" style="background:var(--sky-soft)"><b style="color:#1F6FA0">지구형 행성</b><br>수성, 금성, 지구, <span class="bl">화성</span><br>질량·반지름 <span class="bl">작다</span> · 표면 <span class="bl">암석</span><br>고리 없음 · 위성 없거나 <span class="bl">적다</span></div>
+      <div class="side" style="background:var(--gas-soft)"><b>목성형 행성</b><br><span class="bl">목성</span>, 토성, 천왕성, 해왕성<br>질량·반지름 <span class="bl">크다</span> · 표면 <span class="bl">기체</span><br>고리 있음 · 위성 <span class="bl">많다</span></div>
+    </div>
+    <div class="rv-bar"><button class="btn rv-btn">정답 확인</button></div>
+  </div>
+</section>
+
+<!-- ================= 영상 ================= -->
+<section id="video">
+  <div class="sec-head"><div class="num">5</div><h2>영상으로 보는 지구형 vs 목성형<small>마무리 영상</small></h2></div>
+  <div class="card reveal" style="text-align:center;border-color:#C3C9F5">
+    <p class="big-q" style="margin-top:0">지구형 행성과 목성형 행성은 얼마나 다를까?</p>
+    <p>영상을 보면서 오늘 정리한 차이(크기, 표면, 고리, 위성)가 나오는지 찾아보자.</p>
+    <div class="linkbtns" style="justify-content:center"><a class="btn yt" href="https://youtu.be/g8wBtpVQ9_k?si=RPLHjPm65rz7x-E8" target="_blank" rel="noopener">▶ 영상 보러 가기</a></div>
+  </div>
+
+  <div class="card reveal" style="background:var(--gas-soft);border-color:#C3C9F5">
+    <h3 style="margin:0">다음 시간에는</h3>
+    <p style="margin:6px 0 0">‘3. 태양의 활동’에 대해 알아보자. (교과서 236~239쪽)</p>
+  </div>
+</section>
+
+</main>
+<footer>미래엔 중학교 과학 1 · Ⅶ. 태양계 · 1. 태양계 구성 천체와 태양의 활동 · 2. 태양계 행성 분류 (234~235쪽)</footer>
+
+<script>
+
+/* ---------- 정답 확인: 버튼 한 번에 빈칸 하나씩 ---------- */
+document.querySelectorAll('[data-reveal]').forEach(box=>{
+  const items=[...box.querySelectorAll('.bl, .ans, .mk')];
+  const btn=box.querySelector('.rv-btn');
+  if(!btn||!items.length) return;
+  const shown=()=>items.filter(x=>x.classList.contains('on')).length;
+  const upd=()=>{
+    const n=shown();
+    if(n<items.length){btn.innerHTML='정답 확인<span class="cnt">'+n+' / '+items.length+'</span>';btn.classList.remove('ghost');}
+    else{btn.textContent='다시 가리기';btn.classList.add('ghost');}
+  };
+  btn.addEventListener('click',()=>{
+    const next=items.find(x=>!x.classList.contains('on'));
+    if(next)next.classList.add('on');
+    else items.forEach(x=>x.classList.remove('on'));
+    upd();
+  });
+  items.forEach(el=>el.addEventListener('click',()=>{el.classList.add('on');upd();}));
+  upd();
+});
+
+
+/* ---------- 스크롤 페이드 & 내비 강조 ---------- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+const links=[...document.querySelectorAll('nav a')];
+const secIo=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id));}}),{rootMargin:'-45% 0px -50% 0px'});
+document.querySelectorAll('main section').forEach(s=>secIo.observe(s));
+
+const PL=[
+  {k:'mercury',n:'수성',m:0.055,r:0.38,s:0,g:'A'},
+  {k:'venus',n:'금성',m:0.82,r:0.95,s:0,g:'A'},
+  {k:'earth',n:'지구',m:1,r:1,s:1,g:'A'},
+  {k:'mars',n:'화성',m:0.11,r:0.53,s:2,g:'A'},
+  {k:'jupiter',n:'목성',m:317.8,r:11.2,s:95,g:'B'},
+  {k:'saturn',n:'토성',m:95.2,r:9.45,s:274,g:'B'},
+  {k:'uranus',n:'천왕성',m:14.5,r:4.0,s:28,g:'B'},
+  {k:'neptune',n:'해왕성',m:17.1,r:3.88,s:16,g:'B'}
+];
+/* ---------- 막대그래프 ---------- */
+(function(){
+  const svg=document.getElementById('chart'),NS='http://www.w3.org/2000/svg';
+  const L=80,R=880,T=30,B=320,H=B-T;
+  // 구간별 축척 (교과서처럼 중간을 줄임)
+  const CFG={
+    mass:{seg:[[0,0],[1,.30],[20,.55],[300,1]],ticks:[0,1,10,20,100,200,300],brk:[.30,.55],fmt:v=>v<1?v.toFixed(2):v<20?v.toFixed(1):Math.round(v),key:'m'},
+    radius:{seg:[[0,0],[12,1]],ticks:[0,2,4,6,8,10,12],brk:null,fmt:v=>v.toFixed(2).replace(/0$/,''),key:'r'},
+    moons:{seg:[[0,0],[20,.35],[100,.7],[280,1]],ticks:[0,20,60,100,280],brk:[.35,.7],fmt:v=>v,key:'s'}
+  };
+  function scale(seg,v){for(let i=1;i<seg.length;i++){const[a,fa]=seg[i-1],[b,fb]=seg[i];if(v<=b)return fa+(v-a)/(b-a)*(fb-fa);}return 1;}
+  function el(t,a,txt){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;svg.appendChild(e);return e;}
+  function draw(name){
+    svg.innerHTML='';const c=CFG[name];
+    c.ticks.forEach(t=>{const y=B-scale(c.seg,t)*H;el('line',{x1:L,y1:y,x2:R,y2:y,stroke:'rgba(255,255,255,.12)'});el('text',{x:L-10,y:y+5,'text-anchor':'end','font-size':15,fill:'#AEB7E6','font-family':'Noto Sans KR'},t);});
+    el('line',{x1:L,y1:B,x2:R,y2:B,stroke:'#DDE2FF','stroke-width':2});el('line',{x1:L,y1:T-10,x2:L,y2:B,stroke:'#DDE2FF','stroke-width':2});
+    if(c.brk)c.brk.forEach(f=>{const y=B-f*H;el('path',{d:`M${L-9} ${y+4} l18 -6 M${L-9} ${y+11} l18 -6`,stroke:'#FFD84D','stroke-width':2.5});});
+    const w=(R-L)/PL.length;
+    PL.forEach((p,i)=>{
+      const v=p[c.key],h=scale(c.seg,v)*H,x=L+i*w+w*.2,bw=w*.6;
+      const col='#8FB6F0';
+      const bar=el('rect',{x,y:B,width:bw,height:0,rx:6,fill:col});
+      requestAnimationFrame(()=>{bar.style.transition='y .6s, height .6s';bar.setAttribute('y',B-Math.max(h,2));bar.setAttribute('height',Math.max(h,2));});
+      el('text',{x:x+bw/2,y:B-Math.max(h,2)-8,'text-anchor':'middle','font-size':17,fill:'#fff','font-family':'Jua'},c.fmt(v));
+      el('text',{x:x+bw/2,y:B+28,'text-anchor':'middle','font-size':18,fill:'#DDE2FF','font-family':'Jua'},p.n);
+    });
+  }
+  document.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-g]').forEach(x=>x.classList.toggle('off',x!==b));draw(b.dataset.g);});
+  draw('mass');
+})();
+
+/* ---------- 분류 놀이 ---------- */
+(function(){
+  const pool=document.getElementById('pool'),res=document.getElementById('sortResult');
+  let sel=null;
+  function make(){
+    pool.innerHTML='';document.querySelectorAll('.group .zone').forEach(z=>z.innerHTML='');res.textContent='';
+    [...PL].sort(()=>Math.random()-.5).forEach(p=>{
+      const c=document.createElement('div');c.className='pcard';c.draggable=true;c.dataset.g=p.g;c.dataset.k=p.k;
+      c.innerHTML=`<img src="images/${p.k}.webp" alt="" style="${['earth','mars'].includes(p.k)?'border-radius:50%;':''}">${p.n}`;
+      c.addEventListener('click',e=>{e.stopPropagation();if(sel&&sel!==c&&sel.parentElement!==c.parentElement){move(c.parentElement);return;}if(sel)sel.classList.remove('sel');if(sel===c){sel=null;return;}sel=c;c.classList.add('sel');});
+      c.addEventListener('dragstart',e=>{sel=c;e.dataTransfer.setData('text/plain',p.k);});
+      pool.appendChild(c);
+    });
+  }
+  function move(target){if(!sel)return;sel.classList.remove('sel','ok','bad');target.appendChild(sel);sel=null;res.textContent='';}
+  document.querySelectorAll('.group').forEach(g=>{
+    const z=g.querySelector('.zone');
+    g.addEventListener('click',()=>move(z));
+    g.addEventListener('dragover',e=>{e.preventDefault();g.classList.add('over');});
+    g.addEventListener('dragleave',()=>g.classList.remove('over'));
+    g.addEventListener('drop',e=>{e.preventDefault();g.classList.remove('over');move(z);});
+  });
+  pool.addEventListener('click',()=>move(pool));
+  pool.addEventListener('dragover',e=>e.preventDefault());
+  pool.addEventListener('drop',e=>{e.preventDefault();move(pool);});
+  document.getElementById('sortReset').onclick=make;
+  document.getElementById('sortCheck').onclick=()=>{
+    if(pool.children.length){res.textContent='아직 옮기지 않은 행성이 있어요!';res.style.color='#9A7400';return;}
+    const A=[...document.querySelector('[data-zone="A"] .zone').children],B=[...document.querySelector('[data-zone="B"] .zone').children];
+    // 어느 집단에 지구형을 모았는지는 상관없음
+    const aG=A.filter(c=>c.dataset.g==='A').length>=A.filter(c=>c.dataset.g==='B').length?'A':'B';
+    let wrong=0;
+    A.forEach(c=>{const ok=c.dataset.g===aG;c.classList.toggle('ok',ok);c.classList.toggle('bad',!ok);if(!ok)wrong++;});
+    B.forEach(c=>{const ok=c.dataset.g!==aG;c.classList.toggle('ok',ok);c.classList.toggle('bad',!ok);if(!ok)wrong++;});
+    if(wrong===0){res.textContent='정답! 지구와 닮은 행성, 목성과 닮은 행성으로 나눴어요.';res.style.color='var(--answer)';}
+    else{res.textContent='빨간 카드 '+wrong+'개를 다시 생각해 보자. 그래프를 다시 확인해 볼까?';res.style.color='#DC2626';}
+  };
+  make();
+})();
+</script>
+</body>
+</html>
